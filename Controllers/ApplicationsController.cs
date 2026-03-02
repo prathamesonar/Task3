@@ -23,5 +23,10 @@ namespace JobPortalApi.Controllers
             applications.Add(application);
             return Ok(application);
         }
+        [HttpGet]
+        public IActionResult Getapplications()
+        {
+            return Ok(applications);
+        }
     }
 }
