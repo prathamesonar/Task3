@@ -6,5 +6,6 @@ namespace JobPortalApi.Models
         public string ApplicantName { get; set; }
         public string Email { get; set; }
         public int JobId { get; set; }
+        public string Answer { get; set; }
     }
 }

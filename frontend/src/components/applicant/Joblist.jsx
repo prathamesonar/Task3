@@ -6,9 +6,13 @@ function Joblist({jobs}){
       <h2>Available Jobs</h2>
       {jobs.map(j=>(
         <div key={j.id} style={{border: "1px solid black", padding: "10px", marginBottom: "8px", borderRadius:"4px"}}>
-            <div onClick={()=>setselected(j.id)}>Job id: {j.id} - {j.title}</div>
+            <div onClick={()=>setselected(j.id)}>Job code: {j.id} - {j.title}</div>
             {selectedjob ===j.id &&(
-              <p>{j.description}</p>
+              <div >
+              <p style={{textAlign:"left"}}>Description</p>
+              <div style={{marginTop:"5px", border: "1px solid black", marginBottom: "2px", borderRadius: "4px", backgroundColor:"pink"}} dangerouslySetInnerHTML={{ __html: j.description }}/>
+              <p><i>Question:</i>{j.question}</p>
+              </div>
             )}
         </div>
       ))}

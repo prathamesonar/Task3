@@ -7,6 +7,7 @@ function Applicantlist({applications}){
         <div key={a.id} style={{border: "1px solid black", marginBottom: "3px", borderRadius: "4px"}}>
           <p>Name: {a.applicantName}</p>
           <p>Email: {a.email}</p>
+          <p>Answer: {a.answer}</p>
         </div>
       ))}
     </div>
