@@ -17,6 +17,12 @@ function App() {
   const [correctanswer, setcorrectanswer] = useState("");
   const [answer, setanswer] = useState("");
 
+  const [currentsalary, setcurrentsalary] =useState("");
+  const [expected, setexpected] =useState("");
+  const [phone, setphone] =useState("");
+  const [experience, setexperience] =useState("");
+  const [noticeperiod, setnoticeperiod] =useState("");
+
   useEffect(() => {
     if (mode) {
       fetch("http://localhost:5256/api/jobs").then(res => res.json()).then(data => setjobs(data));
@@ -44,7 +50,7 @@ function App() {
   };
 
   const applyjob = () => {
-    if (!name || !email || !jobid) {
+    if (!name || !email || !jobid || !answer|| !currentsalary|| !expected || !phone || !experience || !noticeperiod) {
       alert("Fill all fields before applying.");
       return;
     }
@@ -60,7 +66,12 @@ function App() {
         applicantName: name,
         email: email,
         jobId: parseInt(jobid),
-        answer: answer
+        answer: answer, 
+        currentsalary: currentsalary,
+        expected: expected,
+        phone: phone,
+        experience: experience,
+        noticeperiod: noticeperiod
       })
     }).then(res => {
       if (res.ok) {
@@ -91,12 +102,12 @@ function App() {
 
       {mode === "hr" && (
         <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          <HRdashboard title={title} settitle={settitle} description={description} setdescription={setdescription} createjob={createjob} jobs={jobs} applications={applications} setquestion={setquestion} correctanswer={correctanswer} setcorrectanswer={setcorrectanswer} question={question} answer={answer} />
+          <HRdashboard title={title} settitle={settitle} description={description} setdescription={setdescription} createjob={createjob} jobs={jobs} applications={applications} setquestion={setquestion} correctanswer={correctanswer} setcorrectanswer={setcorrectanswer} question={question} answer={answer} currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod}/>
         </div>
       )}
       {mode === "user" && (
         <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          <Applicantdashboard jobs={jobs} applications={applications} name={name} setname={setname} email={email} setemail={setemail} jobid={jobid} setjobid={setjobid} applyjob={applyjob} answer={answer} setanswer={setanswer} question={question} />
+          <Applicantdashboard jobs={jobs} applications={applications} name={name} setname={setname} email={email} setemail={setemail} jobid={jobid} setjobid={setjobid} applyjob={applyjob} answer={answer} setanswer={setanswer} question={question}   currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod}/>
         </div>
       )}
     </div>

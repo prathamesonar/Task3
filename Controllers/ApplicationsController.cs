@@ -19,6 +19,19 @@ namespace JobPortalApi.Controllers
             {
                 return BadRequest("already applied for job");
             }
+
+            var job = JobsController.jobs.FirstOrDefault(j => j.Id == application.JobId);
+            if (job != null)
+            {
+                if (application.Answer.ToLower() == job.Correctanswer.ToLower())
+                {
+                    application.Status = "Shortlisted";
+                }
+                else
+                {
+                    application.Status = "Rejected";
+                }
+            }
             application.Id = appid++;
             applications.Add(application);
             return Ok(application);

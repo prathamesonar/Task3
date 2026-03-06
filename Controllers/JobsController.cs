@@ -9,7 +9,7 @@ namespace JobPortalApi.Controllers
     [Route("api/[controller]")]
     public class JobsController :ControllerBase
     {
-        private static List<Job> jobs =new List<Job>();
+        public static List<Job> jobs =new List<Job>();
         private static int jobid =1;
         [HttpGet]
         public IActionResult GetJobs(){
