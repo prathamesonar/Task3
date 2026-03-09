@@ -83,6 +83,19 @@ function App() {
     });
   };
 
+  function updatestatus(id, status){
+    fetch(`http://localhost:5256/api/applications/${id}/status`,{
+      method:"PUT",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(status)
+    })
+    .then(()=>{
+      fetch("http://localhost:5256/api/applications")
+      .then(res=>res.json())
+      .then(data=>setapplications(data));
+    });
+  }
+
   return (
     <div>
       <Header setmode={setmode} />
@@ -102,7 +115,7 @@ function App() {
 
       {mode === "hr" && (
         <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          <HRdashboard title={title} settitle={settitle} description={description} setdescription={setdescription} createjob={createjob} jobs={jobs} applications={applications} setquestion={setquestion} correctanswer={correctanswer} setcorrectanswer={setcorrectanswer} question={question} answer={answer} currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod}/>
+          <HRdashboard title={title} settitle={settitle} description={description} setdescription={setdescription} createjob={createjob} jobs={jobs} applications={applications} setquestion={setquestion} correctanswer={correctanswer} setcorrectanswer={setcorrectanswer} question={question} answer={answer} currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod} updatestatus={updatestatus}/>
         </div>
       )}
       {mode === "user" && (
