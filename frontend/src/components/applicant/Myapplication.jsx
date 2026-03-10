@@ -1,7 +1,7 @@
 import React from "react";
 function Myapplication({applications, email, jobs}){
   return(
-    <div style={{border:"2px solid blue",textAlign:"center",borderRadius: "6px",padding: "15px",backgroundColor: "white",width: "300px"}}>
+    <div style={{border:"2px solid blue",textAlign:"center",borderRadius: "6px",padding: "15px",backgroundColor: "#FFF4E6",width: "300px"}}>
       <h3>My Applied jobs</h3>
       {applications.filter(a=>a.email ===email)
         .map(a=>{

@@ -13,5 +13,8 @@ namespace JobPortalApi.Models
         public string experience { get; set; }
         public string noticeperiod { get; set; }
         public string? Status { get; set; }
+        public List<Note> Notes { get; set; } =new List<Note>();
+        public string reason {get; set;}
+        public string location {get; set;}
     }
 }

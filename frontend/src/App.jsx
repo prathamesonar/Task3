@@ -22,6 +22,8 @@ function App() {
   const [phone, setphone] =useState("");
   const [experience, setexperience] =useState("");
   const [noticeperiod, setnoticeperiod] =useState("");
+  const [reason, setreason] =useState("");
+  const [location, setlocation] =useState("");
 
   useEffect(() => {
     if (mode) {
@@ -50,7 +52,7 @@ function App() {
   };
 
   const applyjob = () => {
-    if (!name || !email || !jobid || !answer|| !currentsalary|| !expected || !phone || !experience || !noticeperiod) {
+    if(!name || !email || !jobid || !answer|| !currentsalary|| !expected || !phone || !experience || !noticeperiod || !reason|| !location){
       alert("Fill all fields before applying.");
       return;
     }
@@ -71,7 +73,9 @@ function App() {
         expected: expected,
         phone: phone,
         experience: experience,
-        noticeperiod: noticeperiod
+        noticeperiod: noticeperiod,
+        reason: reason,
+        location: location
       })
     }).then(res => {
       if (res.ok) {
@@ -83,11 +87,11 @@ function App() {
     });
   };
 
-  function updatestatus(id, status){
+  function updatestatus(id, status, note){
     fetch(`http://localhost:5256/api/applications/${id}/status`,{
       method:"PUT",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(status)
+      body:JSON.stringify({status: status,note: note})
     })
     .then(()=>{
       fetch("http://localhost:5256/api/applications")
@@ -115,12 +119,12 @@ function App() {
 
       {mode === "hr" && (
         <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          <HRdashboard title={title} settitle={settitle} description={description} setdescription={setdescription} createjob={createjob} jobs={jobs} applications={applications} setquestion={setquestion} correctanswer={correctanswer} setcorrectanswer={setcorrectanswer} question={question} answer={answer} currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod} updatestatus={updatestatus}/>
+          <HRdashboard title={title} settitle={settitle} description={description} setdescription={setdescription} createjob={createjob} jobs={jobs} applications={applications} setquestion={setquestion} correctanswer={correctanswer} setcorrectanswer={setcorrectanswer} question={question} answer={answer} currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod} updatestatus={updatestatus}  reason={reason} location={location} setreason={setreason} setlocation={setlocation}/>
         </div>
       )}
       {mode === "user" && (
         <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          <Applicantdashboard jobs={jobs} applications={applications} name={name} setname={setname} email={email} setemail={setemail} jobid={jobid} setjobid={setjobid} applyjob={applyjob} answer={answer} setanswer={setanswer} question={question}   currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod}/>
+          <Applicantdashboard jobs={jobs} applications={applications} name={name} setname={setname} email={email} setemail={setemail} jobid={jobid} setjobid={setjobid} applyjob={applyjob} answer={answer} setanswer={setanswer} question={question}   currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod} reason={reason} location={location} setreason={setreason} setlocation={setlocation}/>
         </div>
       )}
     </div>

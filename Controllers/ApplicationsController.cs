@@ -42,13 +42,19 @@ namespace JobPortalApi.Controllers
             return Ok(applications);
         }
         [HttpPut("{id}/status")]
-        public IActionResult Updatestatus(int id,[FromBody] string status)
+        public IActionResult Updatestatus(int id,[FromBody] Statusupdate data)
         {
             var application =applications.FirstOrDefault(a=> a.Id==id);
             if(application ==null)
                 return NotFound();
-            application.Status = status;
+            application.Status = data.Status;
+            application.Notes.Add(new Note{stage=data.Status,text=data.Note});
             return Ok(application);
         }
+    }
+    public class Statusupdate
+    {
+        public string status { get; set; }
+        public string note { get; set; }
     }
 }
