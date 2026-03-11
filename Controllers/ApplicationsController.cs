@@ -47,8 +47,8 @@ namespace JobPortalApi.Controllers
             var application =applications.FirstOrDefault(a=> a.Id==id);
             if(application ==null)
                 return NotFound();
-            application.Status = data.Status;
-            application.Notes.Add(new Note{stage=data.Status,text=data.Note});
+            application.Status = data.status;
+            application.Notes.Add(new Note{stage=data.status,text=data.note});
             return Ok(application);
         }
     }

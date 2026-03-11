@@ -15,7 +15,7 @@ function Joblist({jobs}){
               <p style={{textAlign:"left"}}>Description</p>
               <div style={{marginTop:"5px", border: "1px solid black", marginBottom: "2px", borderRadius: "4px", backgroundColor: "pink" }} dangerouslySetInnerHTML={{ __html: j.description }} />
               <p style={{textAlign:"left"}}><i>Question:</i>{j.question}</p>
-              <p style={{textAlign:"left"}}><i>answer:</i>{j.correctanswer}</p>
+              <p style={{textAlign:"left"}}><i>Answer:</i>{j.correctanswer}</p>
             </div>
           )}
         </div>

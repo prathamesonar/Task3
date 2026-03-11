@@ -105,11 +105,11 @@ function App() {
       <Header setmode={setmode} />
       {!mode && (
         <div style={{ display: "flex", justifyContent: "center", marginTop: "50px" }}>
-          <div style={{ display: "flex", gap: "30px", padding: "20px", border: "2px solid blue", borderRadius: "6px", backgroundColor: "violet", flexDirection: "column" }}>
+          <div style={{ display: "flex", gap: "30px", padding: "20px", border: "2px solid blue", borderRadius: "6px", backgroundColor: "#F3E8FF", flexDirection: "column" }}>
             <button onClick={() => setmode("hr")} style={{ padding: "8px 16px", backgroundColor: "blue", color: "white", border: "none", borderRadius: "4px" }}>HR</button>
             <button onClick={() => setmode("user")} style={{ padding: "8px 16px", backgroundColor: "green", color: "white", border: "none", borderRadius: "4px" }}>Applicant</button>
             {
-              <h1 style={{ margin: "20px", color: "white" }}>
+              <h1 style={{margin: "20px"}}>
                 Welcome to HR Portal
               </h1>
             }
@@ -124,7 +124,7 @@ function App() {
       )}
       {mode === "user" && (
         <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          <Applicantdashboard jobs={jobs} applications={applications} name={name} setname={setname} email={email} setemail={setemail} jobid={jobid} setjobid={setjobid} applyjob={applyjob} answer={answer} setanswer={setanswer} question={question}   currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod} reason={reason} location={location} setreason={setreason} setlocation={setlocation}/>
+          <Applicantdashboard jobs={jobs} applications={applications} name={name} setname={setname} email={email} setemail={setemail} jobid={jobid} setjobid={setjobid} applyjob={applyjob} answer={answer} setanswer={setanswer} question={question}  currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod} reason={reason} location={location} setreason={setreason} setlocation={setlocation}/>
         </div>
       )}
     </div>

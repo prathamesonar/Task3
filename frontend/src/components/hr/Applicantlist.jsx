@@ -1,20 +1,19 @@
 import React, {useState} from "react";
 import Notes from "./Notes";
-function Applicantlist({applications, jobs, updatestatus}){
+function Applicantlist({applications, jobs, updatestatus, selectedJob,setSelectedJob}){
   const [note,setnote] =useState(false);
   const [selectedstatus,setselectedstatus] =useState(null);
   const [newstatus,setnewstatus] =useState("");
   const [selected, setselected] = useState(null);
-  const [selectedjob, setselectedjob] = useState("");
-  const filtered =selectedjob ?applications.filter(a=>a.jobId ==selectedjob) :applications;
-  return(
+  const filtered = selectedJob ? applications.filter(a => a.jobId == selectedJob) : applications;
+    return(
     <div style={{borderRadius: "6px",textAlign:"center",border: "2px solid blue",padding: "15px",backgroundColor: "#FFF4E6",width: "250px"}}>
       <h3>Applicants</h3>
-      <select value={selectedjob} onChange={(e)=>setselectedjob((e.target.value))} style={{marginBottom:"10px" ,border: "1px solid black", borderRadius: "4px", padding:"10px"}}>
-      <option value="">select Job</option>
-      {jobs.map(j=>(
-        <option key={j.id} value={j.id}>{j.title}</option>
-      ))}
+      <select value={selectedJob} onChange={(e)=>setSelectedJob(e.target.value)} style={{marginBottom:"10px"}}>
+        <option value="">select Job</option>
+        {jobs.map(j=>(
+          <option key={j.id} value={j.id}>{j.title}</option>
+        ))}
       </select>
       {filtered.map(a=>(
         <div key={a.id} style={{border: "1px solid black", marginBottom: "3px", borderRadius: "4px", textAlign:"left"}}>
