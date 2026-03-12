@@ -1,88 +1,133 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import Header from "./components/Header";
+import HRdashboard from "./components/hr/HRdashboard";
+import Applicantdashboard from "./components/applicant/Applicantdashboard";
 
 function App() {
-  const [mode,setmode] =useState("");
-  const [jobs,setjobs] =useState([]);
+  const [mode, setmode] = useState("");
+  const [jobs, setjobs] = useState([]);
+  const [applications, setapplications] = useState([]);
 
-  const [title,settitle] =useState("");
-  const [description,setdescription] =useState("");
-  const [name,setname] =useState("");
-  const [email,setemail] =useState("");
-  const [jobid,setjobid] =useState("");
+  const [title, settitle] = useState("");
+  const [description, setdescription] = useState("");
+  const [name, setname] = useState("");
+  const [email, setemail] = useState("");
+  const [jobid, setjobid] = useState("");
+  const [question, setquestion] = useState("");
+  const [correctanswer, setcorrectanswer] = useState("");
+  const [answer, setanswer] = useState("");
 
-  useEffect(()=>{if(mode==="user"){
-    fetch("http://localhost:5256/api/jobs").then(res=>res.json()).then(data=>setjobs(data));}},[mode]);
+  const [currentsalary, setcurrentsalary] =useState("");
+  const [expected, setexpected] =useState("");
+  const [phone, setphone] =useState("");
+  const [experience, setexperience] =useState("");
+  const [noticeperiod, setnoticeperiod] =useState("");
+  const [reason, setreason] =useState("");
+  const [location, setlocation] =useState("");
 
-  const createjob =()=>{
-    fetch("http://localhost:5256/api/jobs",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({title,description})
-    }).then(()=>{
+  useEffect(() => {
+    if (mode) {
+      fetch("http://localhost:5256/api/jobs").then(res => res.json()).then(data => setjobs(data));
+      fetch("http://localhost:5256/api/applications").then(res => res.json()).then(data => setapplications(data));
+    }
+  }, [mode]);
+
+  const createjob = () => {
+    if (!title || !description || !question || !correctanswer) {
+      alert("Fill all fields before creating a job");
+      return;
+    }
+    fetch("http://localhost:5256/api/jobs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description, question, correctanswer })
+    }).then(() => {
       alert("job created");
       settitle("");
       setdescription("");
+      setquestion("");
+      setcorrectanswer("");
+      fetch("http://localhost:5256/api/jobs").then(res => res.json()).then(data => setjobs(data));
     });
   };
 
-  const applyjob =()=>{
-    fetch("http://localhost:5256/api/applications",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        applicantName:name,
-        email:email,
-        jobId:parseInt(jobid)
+  const applyjob = () => {
+    if(!name || !email || !jobid || !answer|| !currentsalary|| !expected || !phone || !experience || !noticeperiod || !reason|| !location){
+      alert("Fill all fields before applying.");
+      return;
+    }
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!valid.test(email)) {
+      alert("Please enter a valid email");
+      return;
+    }
+    fetch("http://localhost:5256/api/applications", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        applicantName: name,
+        email: email,
+        jobId: parseInt(jobid),
+        answer: answer, 
+        currentsalary: currentsalary,
+        expected: expected,
+        phone: phone,
+        experience: experience,
+        noticeperiod: noticeperiod,
+        reason: reason,
+        location: location
       })
-    }).then(res=>{
-      if(res.ok){
-        alert("applied");
+    }).then(res => {
+      if (res.ok) {
+        alert("Thank you " + name + "! Your application has been submitted.");
+        fetch("http://localhost:5256/api/applications").then(res => res.json()).then(data => setapplications(data));
       } else {
         alert("already applied");
       }
     });
   };
 
-  if(!mode){
-    return(
-      <div style={{display: "flex",flexDirection: "row",alignItems: "center",gap: "30px"}}>
-        <button onClick={()=>setmode("hr")}>HR</button>
-        <button onClick={()=>setmode("user")}>applicant</button>
-      </div>
-    );
-  }
-
-  if(mode==="hr"){
-    return(
-      <div style={{display: "flex",flexDirection: "column",alignItems: "center",gap: "30px"}}>
-        <h2>create</h2>
-        <input placeholder="title" value={title} onChange={e=>settitle(e.target.value)}/>
-        <input placeholder="description" value={description} onChange={e=>setdescription(e.target.value)}/>
-        <button onClick={createjob}>post</button>
-      </div>
-    );
+  function updatestatus(id, status, note){
+    fetch(`http://localhost:5256/api/applications/${id}/status`,{
+      method:"PUT",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({status: status,note: note})
+    })
+    .then(()=>{
+      fetch("http://localhost:5256/api/applications")
+      .then(res=>res.json())
+      .then(data=>setapplications(data));
+    });
   }
 
   return (
-    <div style={{display: "flex",flexDirection: "row",alignItems: "center",gap: "10px"}}>
-      <div>
-      <h2>jobs</h2>
-      {jobs.map(j=>(
-        <div key={j.id}>
-          <p>id:{j.id}</p>
-          <p>title: {j.title}</p>
-          <p>description: {j.description}</p>
-          <hr/>
+    <div>
+      <Header setmode={setmode} />
+      {!mode && (
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "50px" }}>
+          <div style={{ display: "flex", gap: "30px", padding: "20px", border: "2px solid blue", borderRadius: "6px", backgroundColor: "#F3E8FF", flexDirection: "column" }}>
+            <button onClick={() => setmode("hr")} style={{ padding: "8px 16px", backgroundColor: "blue", color: "white", border: "none", borderRadius: "4px" }}>HR</button>
+            <button onClick={() => setmode("user")} style={{ padding: "8px 16px", backgroundColor: "green", color: "white", border: "none", borderRadius: "4px" }}>Applicant</button>
+            {
+              <h1 style={{margin: "20px"}}>
+                Welcome to HR Portal
+              </h1>
+            }
+          </div>
         </div>
-      ))}</div>
-      <div style={{display: "flex",flexDirection: "column",alignItems: "center",gap: "10px"}}>
-      <h3>apply for job</h3>
-      <input placeholder="name" value={name} onChange={e=>setname(e.target.value)}/>
-      <input placeholder="mail" value={email} onChange={e=>setemail(e.target.value)}/>
-      <input placeholder="job id" value={jobid} onChange={e=>setjobid(e.target.value)}/>
-      <button onClick={applyjob}>apply</button></div>
+      )}
+
+      {mode === "hr" && (
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
+          <HRdashboard title={title} settitle={settitle} description={description} setdescription={setdescription} createjob={createjob} jobs={jobs} applications={applications} setquestion={setquestion} correctanswer={correctanswer} setcorrectanswer={setcorrectanswer} question={question} answer={answer} currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod} updatestatus={updatestatus}  reason={reason} location={location} setreason={setreason} setlocation={setlocation}/>
+        </div>
+      )}
+      {mode === "user" && (
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
+          <Applicantdashboard jobs={jobs} applications={applications} name={name} setname={setname} email={email} setemail={setemail} jobid={jobid} setjobid={setjobid} applyjob={applyjob} answer={answer} setanswer={setanswer} question={question}  currentsalary={currentsalary} setcurrentsalary={setcurrentsalary} expected={expected} setexpected={setexpected} phone={phone} setphone={setphone} experience={experience} setexperience={setexperience} noticeperiod={noticeperiod} setnoticeperiod={setnoticeperiod} reason={reason} location={location} setreason={setreason} setlocation={setlocation}/>
+        </div>
+      )}
     </div>
   );
 }
-
 export default App;

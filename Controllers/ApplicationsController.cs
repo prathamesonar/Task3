@@ -19,9 +19,42 @@ namespace JobPortalApi.Controllers
             {
                 return BadRequest("already applied for job");
             }
+
+            var job = JobsController.jobs.FirstOrDefault(j => j.Id == application.JobId);
+            if (job != null)
+            {
+                if (application.Answer.ToLower() == job.Correctanswer.ToLower())
+                {
+                    application.Status = "Shortlisted";
+                }
+                else
+                {
+                    application.Status = "Rejected";
+                }
+            }
             application.Id = appid++;
             applications.Add(application);
             return Ok(application);
         }
+        [HttpGet]
+        public IActionResult Getapplications()
+        {
+            return Ok(applications);
+        }
+        [HttpPut("{id}/status")]
+        public IActionResult Updatestatus(int id,[FromBody] Statusupdate data)
+        {
+            var application =applications.FirstOrDefault(a=> a.Id==id);
+            if(application ==null)
+                return NotFound();
+            application.Status = data.status;
+            application.Notes.Add(new Note{stage=data.status,text=data.note});
+            return Ok(application);
+        }
+    }
+    public class Statusupdate
+    {
+        public string status { get; set; }
+        public string note { get; set; }
     }
 }
